@@ -714,8 +714,13 @@ ls(Dir) ->
 	{ok, Entries} ->
 	    ls_print(sort(Entries));
 	{error,_E} ->
-	    format("Invalid directory\n")
+	    ls_file( filelib:is_file(Dir), Dir )
     end.
+
+ls_file( true, File ) ->
+	ls_print( [File] );
+ls_file( false, _ ) ->
+	format("Invalid directory or file\n").
 
 ls_print([]) -> ok;
 ls_print(L) ->
