@@ -154,7 +154,8 @@ ls(Config) when is_list(Config) ->
     Directory = ?config(data_dir, Config),
     ok = c:ls(Directory),
     File = filename:join(Directory, "m.erl"),
-    ok = c:ls(File).
+    ok = c:ls(File),
+    ok = c:ls("no_such_file").
 
 memory(doc) ->
     ["Checks that c:memory/[0,1] returns consistent results."];

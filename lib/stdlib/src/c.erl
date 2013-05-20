@@ -714,15 +714,15 @@ ls(Dir) ->
 	{ok, Entries} ->
 	    ls_print(sort(Entries));
 	{error, enotdir} ->
-	    ls_file(filelib:is_regular(Dir), Dir);
+	    ls_file(file:read_link_info(Dir), Dir);
 	{error, Error} ->
-	    format(file:format_error(Error))
+	    format(file:format_error(Error) ++ "\n")
     end.
 
-ls_file(true, File) ->
-	ls_print([File]);
-ls_file(false, _) ->
-	format("Invalid directory or file\n").
+ls_file({error, _Error}, _) ->
+	format("Invalid directory or file\n");
+ls_file(_Info, File) ->
+	ls_print([File]).
 
 ls_print([]) -> ok;
 ls_print(L) ->
